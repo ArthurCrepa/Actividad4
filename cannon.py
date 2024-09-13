@@ -34,31 +34,35 @@ def draw():
 
 def move():
     "Move ball and targets."
-    if randrange(30) == 0:
+    if randrange(30) == 0:  # Aumentar la frecuencia de aparición de los balones
         y = randrange(-150, 150)
         target = vector(200, y)
         targets.append(target)
 
     for target in targets:
-        target.x -= 2
+        target.x -= 2  # Aumentar la velocidad de los balones
 
     if inside(ball):
-        speed.y -= 0.7
+        speed.y -= 0.7  # Aumentar la velocidad de caída del proyectil
         ball.move(speed)
-        
+
+    for target in targets:
+        if not inside(target):
+            target.x = 200  # Reposiciona el balón a la derecha de la pantalla
+
+    if inside(ball):
+        speed.y -= 0.35
+        ball.move(speed)
+
     dupe = targets.copy()
     targets.clear()
 
     for target in dupe:
         if abs(target - ball) > 13:
             targets.append(target)
+
     draw()
-
-    for target in targets:
-        if not inside(target):
-            return
-
-    ontimer(move, 50)
+    ontimer(move, 50)  # Mantener la misma velocidad de actualización
 
 setup(420, 420, 370, 0)
 hideturtle()
